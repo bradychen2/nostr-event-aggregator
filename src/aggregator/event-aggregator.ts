@@ -12,24 +12,37 @@ import { EventPresenter } from 'src/interface/presenter/event-presenter';
 @Injectable()
 export class EventAggregator implements OnApplicationBootstrap {
   relays: WebSocket[] = [];
+  addresses: string[] = [];
   private subscriptionId!: string;
   constructor(
     private readonly eventUseCase: EventUseCase,
     private readonly eventPresenter: EventPresenter,
   ) {}
 
-  public async onGatewayInit() {
+  public async onAggregatorInit() {
     let relay: WebSocket | Error | undefined = undefined;
-    while (!(relay instanceof WebSocket)) {
+    while (true) {
       // Prompt the user to input the URL of the relay server
-      const relayServerUrl = await this.promptUserLinkToNewRelay();
+      const userInput = await this.promptUserLinkToNewRelay();
+      if (userInput === 'q' || userInput === 'Q') {
+        // If the user enters "q" or "Q",
+        // disconnects all relays and return
+        this.relays.forEach((relay) => {
+          relay.close();
+        });
+        return;
+      }
       // Connect to the relay server
-      relay = await this.linkToRelay(relayServerUrl);
+      relay = await this.linkToRelay(userInput);
+      if (relay instanceof WebSocket) {
+        // Send the REQ message to subscribe events from the relay server
+        const subscriptionId = this.subscriptionId
+          ? this.subscriptionId
+          : uuidv4();
+        const reqMessage = [MsgType.REQ, subscriptionId];
+        relay.send(JSON.stringify(reqMessage));
+      }
     }
-    // Send the REQ message to subscribe to events from the relay server
-    this.subscriptionId = uuidv4();
-    const reqMessage = [MsgType.REQ, this.subscriptionId];
-    relay.send(JSON.stringify(reqMessage));
   }
 
   async onApplicationBootstrap() {
@@ -50,7 +63,7 @@ export class EventAggregator implements OnApplicationBootstrap {
   private async promptUserLinkToNewRelay() {
     // Prompt the user to input the URL of the relay server
     const relayServerUrl: string = await this.prompt(
-      'Enter the URL of the relay server you would like to link: ',
+      'Enter the URL of the relay server you would like to link ("q" or "Q" to quit): ',
     );
     return relayServerUrl;
   }
@@ -60,16 +73,23 @@ export class EventAggregator implements OnApplicationBootstrap {
   ): Promise<WebSocket | Error> {
     return new Promise((resolve) => {
       try {
+        if (this.addresses.includes(relayServerUrl)) {
+          console.log('Already connected to this relay');
+          return resolve(new Error('Already connected to this relay'));
+        }
+
         const relay: WebSocket = new WebSocket(relayServerUrl);
+
         relay.on('open', () => {
-          console.log(`Connected to relay: ${relayServerUrl}`);
           this.relays.push(relay);
+          this.addresses.push(relayServerUrl);
+          console.log(`Connected to relay: ${relayServerUrl}`);
           return resolve(relay);
         });
 
         relay.on('close', () => {
+          this.addresses.filter((address) => address !== relayServerUrl);
           console.log(`Disconnected from relay: ${relayServerUrl}`);
-          this.onGatewayInit();
         });
 
         relay.on('error', (error) => {
@@ -77,11 +97,11 @@ export class EventAggregator implements OnApplicationBootstrap {
           return resolve(new Error('Error connecting to relay'));
         });
 
-        relay.on('message', (data) => {
+        relay.on('message', async (data) => {
           const message = JSON.parse(data.toString());
           if (message[0] === MsgType.EVENT) {
             // If the relay server sends an EVENT message, then a new event has been published
-            this.receiveEvent(message);
+            await this.receiveEvent(message);
           }
         });
       } catch (error) {

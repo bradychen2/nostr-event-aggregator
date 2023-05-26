@@ -6,6 +6,6 @@ export class AppService {
   constructor(private readonly eventAggregator: EventAggregator) {}
 
   async startEventAggregator(): Promise<void> {
-    await this.eventAggregator.onGatewayInit();
+    await this.eventAggregator.onAggregatorInit();
   }
 }

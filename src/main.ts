@@ -6,6 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);
   const appService = app.get(AppService);
-  appService.startEventAggregator();
+  await appService.startEventAggregator();
+  process.exit(0);
 }
 bootstrap();
