@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
-import { AppModule } from 'apps/event-aggregator/src/app.module';
+import { EventConsumerModule } from './event-consumer.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(AppModule, {
+  const app = await NestFactory.createMicroservice(EventConsumerModule, {
     transport: Transport.KAFKA,
     options: {
       client: {

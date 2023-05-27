@@ -19,7 +19,7 @@ export class EventUseCase {
     }
   }
 
-  public async receiveEvent(event: Event): Promise<Event> {
+  public async createEvent(event: Event): Promise<Event> {
     try {
       await this.dataServices.event.create(event);
       return event;

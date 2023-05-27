@@ -12,7 +12,7 @@
     "event-aggregator": {
       "type": "application",
       "root": "apps/event-aggregator",
-      "entryFile": "main",
+      "entryFile": "event-aggregator/src/main",
       "sourceRoot": "apps/event-aggregator/src",
       "compilerOptions": {
         "tsConfigPath": "apps/event-aggregator/tsconfig.app.json"
@@ -21,7 +21,7 @@
     "event-consumer": {
       "type": "application",
       "root": "apps/event-consumer",
-      "entryFile": "main",
+      "entryFile": "event-consumer/src/main",
       "sourceRoot": "apps/event-consumer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/event-consumer/tsconfig.app.json"

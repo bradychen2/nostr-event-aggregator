@@ -13,11 +13,18 @@ export class EventAggregator implements OnApplicationBootstrap {
   relays: WebSocket[] = [];
   addresses: string[] = [];
   private subscriptionId!: string;
+  private rlInterface: readline.Interface;
+
   constructor(
     @Inject('EVENT_AGGREGATOR_SERVICE')
     private readonly eventClient: ClientKafka,
     private readonly eventUseCase: EventUseCase,
-  ) {}
+  ) {
+    this.rlInterface = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+  }
 
   public async onAggregatorInit() {
     let relay: WebSocket | Error | undefined = undefined;
@@ -108,7 +115,7 @@ export class EventAggregator implements OnApplicationBootstrap {
           switch (messageType) {
             case MsgType.EVENT:
               // send event to Kafka
-              this.receiveEvent(message);
+              await this.receiveEvent(message);
               break;
             default:
               console.log('Received invalid message from relay');
@@ -140,14 +147,8 @@ export class EventAggregator implements OnApplicationBootstrap {
   }
 
   private async prompt(message: string): Promise<string> {
-    return new Promise((resolve) => {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      rl.question(message, (answer) => {
-        rl.close();
+    return new Promise<string>((resolve) => {
+      this.rlInterface.question(message, (answer) => {
         resolve(answer);
       });
     });
