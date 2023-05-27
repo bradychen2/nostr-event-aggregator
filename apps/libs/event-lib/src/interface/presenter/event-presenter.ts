@@ -1,4 +1,4 @@
-import { MsgType } from 'apps/event-aggregator/src/domain/constant';
+import { MsgType } from '../../domain/constant';
 import { Event } from '../../domain/Event';
 import { ReceivedEventDto } from '../dto/ReceivedEvent.dto';
 import { SentEventDto } from '../dto/SentEvent.dto';

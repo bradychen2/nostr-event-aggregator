@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Event } from 'apps/event-aggregator/src/domain/Event';
-import { IDataServices } from 'apps/event-aggregator/src/framework/data-services/abstract/data-services.abstract';
+import { Event } from '../domain/Event';
+import { IDataServices } from '../framework/data-services/abstract/data-services.abstract';
 
 @Injectable()
 export class EventUseCase {

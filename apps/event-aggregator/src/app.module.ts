@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { EventAggregatorModule } from './aggregator/event-aggregator.module';
-import { DataServicesModule } from './framework/data-services/data-services.module';
+import { DataServicesModule } from '@app/event-lib/framework/data-services';
 
 @Module({
   imports: [

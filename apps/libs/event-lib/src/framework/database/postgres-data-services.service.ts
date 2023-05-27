@@ -1,11 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { IDataServices } from '../data-services/abstract/data-services.abstract';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EventModel } from 'apps/event-aggregator/src/framework/database/models/Event.model';
 import { Repository } from 'typeorm';
 import { PostgresGenericRepository } from './postgres-generic-repository';
-import { Event } from 'apps/event-aggregator/src/domain/Event';
-import { EventDataModel } from 'apps/event-aggregator/src/interface/data-model/event-data-model';
+import { Event } from '../../domain/Event';
+import { EventModel } from './models';
+import { EventDataModel } from '../../interface';
 
 @Injectable()
 export class PostgresDataServices implements IDataServices, OnModuleInit {

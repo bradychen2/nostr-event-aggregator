@@ -1,4 +1,4 @@
-import { MsgType } from 'apps/event-aggregator/src/domain/constant';
+import { MsgType } from '@app/event-lib/domain/constant';
 
 export class FilterDto {
   ids: string[] = []; // <a list of event ids or prefixes>,

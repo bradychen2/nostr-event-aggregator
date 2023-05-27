@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EventModel } from 'apps/event-aggregator/src/framework/database/models/Event.model';
+import { EventModel } from './models';
 import { PostgresDataServices } from './postgres-data-services.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IDataServices } from '../data-services/abstract/data-services.abstract';

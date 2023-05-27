@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UseCaseModule } from 'apps/event-aggregator/src/use-cases/use-cases.module';
 import { EventAggregator } from './event-aggregator';
-import { EventPresenter } from 'apps/event-aggregator/src/interface/presenter/event-presenter';
+import { UseCaseModule } from '@app/event-lib/use-cases';
+import { EventPresenter } from '@app/event-lib/interface';
 
 @Module({
   imports: [

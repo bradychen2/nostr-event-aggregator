@@ -1,6 +1,6 @@
-import { Event } from 'apps/event-aggregator/src/domain/Event';
-import { DataModel } from 'apps/event-aggregator/src/framework/data-services/abstract/data-model.abstract';
-import { EventModel } from 'apps/event-aggregator/src/framework/database/models/Event.model';
+import { Event } from '../../domain/Event';
+import { EventModel } from '../../framework/database';
+import { DataModel } from '../../framework/data-services/abstract/data-model.abstract';
 
 export class EventDataModel implements DataModel<Event, EventModel> {
   public domainToData(domain: Event): EventModel {

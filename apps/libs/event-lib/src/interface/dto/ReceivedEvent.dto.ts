@@ -1,6 +1,6 @@
-import { MsgType } from 'apps/event-aggregator/src/domain/constant';
+import { MsgType } from '../../domain/constant';
 
-export class EventDetail {
+class EventDetail {
   id!: string;
   pubkey!: string;
   created_at!: number;

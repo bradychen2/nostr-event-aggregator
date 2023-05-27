@@ -2,13 +2,11 @@ import * as readline from 'node:readline';
 import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { WebSocket } from 'ws';
-import { Event } from 'apps/event-aggregator/src/domain/Event';
-import { ReceivedEventDto } from 'apps/event-aggregator/src/interface/dto/ReceivedEvent.dto';
-import { EventUseCase } from 'apps/event-aggregator/src/use-cases/event-use-case';
-import { MsgType } from 'apps/event-aggregator/src/domain/constant';
 import { v4 as uuidv4 } from 'uuid';
 import { MessageBody } from '@nestjs/websockets';
-import { EventPresenter } from 'apps/event-aggregator/src/interface/presenter/event-presenter';
+import { EventUseCase } from '@app/event-lib/use-cases';
+import { Event, MsgType } from '@app/event-lib/domain';
+import { ReceivedEventDto } from '@app/event-lib/interface';
 
 @Injectable()
 export class EventAggregator implements OnApplicationBootstrap {

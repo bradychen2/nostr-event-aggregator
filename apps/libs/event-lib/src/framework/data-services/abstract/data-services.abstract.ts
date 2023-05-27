@@ -1,4 +1,4 @@
-import { Event } from 'apps/event-aggregator/src/domain/Event';
+import { Event } from '@app/event-lib/domain/Event';
 import { IRepository } from './repository.abstract';
 
 export abstract class IDataServices {
