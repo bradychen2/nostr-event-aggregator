@@ -37,6 +37,7 @@ export class EventAggregator implements OnApplicationBootstrap {
         this.relays.forEach((relay) => {
           relay.close();
         });
+        this.rlInterface.close();
         return;
       }
       // Connect to the relay server
@@ -109,7 +110,7 @@ export class EventAggregator implements OnApplicationBootstrap {
           // if message is not an array, ignore it
           if (!Array.isArray(messageArray)) {
             console.log('Received invalid message from relay');
-            return;
+            return resolve(new Error('Received invalid message from relay'));
           }
           const messageType = messageArray[0];
           switch (messageType) {
